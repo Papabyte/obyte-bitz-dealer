@@ -1,0 +1,14 @@
+{
+	"name": "obyte-dealer",
+	"version": "0.1.0",
+	"description": "An arbitrage bot for Obyte cryptocurrency",
+	"main": "dealer.js",
+	"author": "papabyte.com",
+	"license": "MIT",
+	"dependencies": {
+		"request": "^2.85.0"
+	},
+	"scripts": {
+		"test": "node test/locales.js"
+	}
+}
