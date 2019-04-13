@@ -7,8 +7,5 @@
 	"license": "MIT",
 	"dependencies": {
 		"request": "^2.85.0"
-	},
-	"scripts": {
-		"test": "node test/locales.js"
 	}
 }
