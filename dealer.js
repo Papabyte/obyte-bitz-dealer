@@ -4,7 +4,7 @@ const tradingConf = require("./trading_conf");
 
 
 getLastPricesAndReplaceOrders();
-setInterval(getLastPricesAndReplaceOrders, tradingConf.refreshTimeInSec * 1000);
+var intervalId = setInterval(getLastPricesAndReplaceOrders, tradingConf.refreshTimeInSec * 1000);
 
 function getLastPricesAndReplaceOrders() {
 	console.log("\n" + new Date().toUTCString());
@@ -94,3 +94,23 @@ function placeSellOrders() {
 		});
 	});
 }
+
+
+//cancel orders when app terminates
+function onExit(){
+	clearInterval(intervalId);
+	bitzAPI.cancelAllOrders(function(err) {
+		if(err)
+			return console.log(err);
+		else
+			return console.log("orders canceled");
+	});
+	process.exit;
+}
+
+process.on('SIGTERM', onExit);
+process.on('SIGINT', onExit);
+
+process.on('uncaughtException', function(e) {
+	onExit();
+});
