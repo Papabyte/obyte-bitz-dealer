@@ -21,6 +21,9 @@ function getAvgBuyPriceForQuantity (pair, qty, handle) {
 		if (!parsedBody.success)
 			return handle("Invalid body: " + body);
 
+		if (!Array.isArray(parsedBody.result))
+			return handle("No orders array: " + body);
+
 		let totalQtySold = 0;
 		let totalReceived = 0;
 		let qtyLeft = qty;
@@ -57,6 +60,9 @@ function getAvgSellPriceForQuantity (pair, qty, handle) {
 		}
 		if (!parsedBody.success)
 			return handle("Invalid body: " + body);
+			
+		if (!Array.isArray(parsedBody.result))
+			return handle("No orders array: " + body);
 
 		let totalQtyBought = 0;
 		let totalPaid = 0;

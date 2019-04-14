@@ -5,6 +5,8 @@ const urlBase = "https://apiv2.bit-z.pro/";
 
 function getMyAssets(handle){
 	sendRequest("Assets/getUserAssets",{},function(error, parsedBody){
+		if (error)
+			return handle(error);
 		if (!parsedBody.data || !Array.isArray(parsedBody.data.info))
 			return handle("unexpected response:\n " + body);
 		
@@ -23,7 +25,8 @@ function getMyAssets(handle){
 function cancelAllOrders(handle){
 
 	sendRequest("Trade/getUserNowEntrustSheet",{pageSize:100},function(error, parsedBody){
-
+		if (error)
+			return handle(error);
 
 		if (!parsedBody.data)
 			return handle("unexpected response:\n " + body);
