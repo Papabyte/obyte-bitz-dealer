@@ -1,7 +1,9 @@
 const bittrexAPI = require("./modules/bittrex_api");
 const bitzAPI = require("./modules/bit_z_api");
 const tradingConf = require("./trading_conf");
+const credentials = require("./credentials.js");
 
+checkConfig();
 
 getLastPricesAndReplaceOrders();
 var intervalId = setInterval(getLastPricesAndReplaceOrders, tradingConf.refreshTimeInSec * 1000);
@@ -93,6 +95,44 @@ function placeSellOrders() {
 			});
 		});
 	});
+}
+
+function checkConfig(){
+	checkIfPositiveNumber(tradingConf,"refreshTimeInSec");
+
+	checkIfNonNegativeNumber(tradingConf, "GB_to_BTC_margin");
+	checkIfNonNegativeNumber(tradingConf, "BTC_to_GB_margin");
+	checkIfNonNegativeNumber(tradingConf, "GB_to_USDT_margin");
+	checkIfNonNegativeNumber(tradingConf, "USDT_to_GB_margin");
+
+	checkIfNonNegativeNumber(tradingConf, "GB_to_BTC_batch_size");
+	checkIfNonNegativeNumber(tradingConf, "BTC_to_GB_batch_size");
+	checkIfNonNegativeNumber(tradingConf, "GB_to_USDT_batch_size");
+	checkIfNonNegativeNumber(tradingConf, "USDT_to_GB_batch_size");
+
+	checkIfNonNegativeNumber(tradingConf, "minGBSellingPriceInBTC");
+	checkIfNonNegativeNumber(tradingConf, "maxGBBuyingPriceInBTC");
+	checkIfNonNegativeNumber(tradingConf, "minGBSellingPriceInUSDT");
+	checkIfNonNegativeNumber(tradingConf, "maxGBBuyingPriceInUSDT");
+
+	checkIfNonEmptyString(credentials, "bit_z_API_key");
+	checkIfNonEmptyString(credentials, "bit_z_API_secret");
+	checkIfNonEmptyString(credentials, "bit_z_trade_password");
+}
+
+function checkIfNonNegativeNumber (object, key){
+	if (!object || !object[key] || typeof object[key] != "number" || object[key] < 0)
+		throw Error("Wrong config, " + key + " must be a number >= 0");
+}
+
+function checkIfPositiveNumber (object, key){
+	if (!object || !object[key] || typeof object[key] != "number" || object[key] <= 0)
+		throw Error("Wrong config, " + key + " must be a number > 0");
+}
+
+function checkIfNonEmptyString(object, key){
+	if (!object || !object[key] || typeof object[key] != "string" || object[key].length === 0)
+	throw Error("Wrong config, " + key + " must be a non empty string");
 }
 
 
