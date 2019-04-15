@@ -1,7 +1,7 @@
 
-
 const publicUrlBase = "https://bittrex.com/api/v1.1/public/"
 const request = require("request");
+const logger = require("./logger");
 
 function getAvgBuyPriceForQuantity (pair, qty, handle) {
 	
@@ -10,9 +10,10 @@ function getAvgBuyPriceForQuantity (pair, qty, handle) {
 	}, 
 	function(error, response, body) {
 		if (error || response.statusCode !== 200) {
+			logger.error(error);
 			return handle(error)
 		}		
-		
+		logger.debug(body);
 		try {
 			var parsedBody = JSON.parse(body);
 		} catch (e) {
@@ -49,9 +50,10 @@ function getAvgSellPriceForQuantity (pair, qty, handle) {
 	}, 
 	function(error, response, body) {
 		if (error || response.statusCode !== 200) {
+			logger.error(error);
 			return handle(error)
 		}		
-		
+		logger.debug(body);
 		try {
 			var parsedBody = JSON.parse(body);
 		} catch (e) {

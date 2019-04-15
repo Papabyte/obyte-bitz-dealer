@@ -1,4 +1,5 @@
 const credentials = require("../credentials.js");
+const logger = require("./logger");
 const crypto = require("crypto");
 const request = require("request");
 const urlBase = "https://apiv2.bit-z.pro/";
@@ -112,16 +113,20 @@ function sendRequest(path, params, handle){
 
 	request(httpOptions, function(error, response, body) {
 		if (error || response.statusCode !== 200) {
-			return handle(error)
+			logger.error(error);
+			return handle(error);
 		}
+		logger.debug(body);
 		try{
 			var parsedBody =	JSON.parse(body);
 
 		}catch(e){
 			return handle(e);
 		}
-		if (parsedBody.status != 200)
+		if (parsedBody.status != 200){
+			logger.error("request error code: " + parsedBody.status);
 			return handle("request error code: " + parsedBody.status);
+		}
 		return handle(null, parsedBody);
 	});
 }
