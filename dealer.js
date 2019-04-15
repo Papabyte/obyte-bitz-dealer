@@ -23,6 +23,8 @@ function getLastPricesAndReplaceOrders() {
 function placeBuyOrders() {
 
 	bittrexAPI.getAvgBuyPriceForQuantity("BTC-GBYTE", tradingConf.GB_to_BTC_batch_size, function(err, price_btc_gb) {
+		console.log("getAvgBuyPriceForQuantity " + price_btc_gb);
+
 		if(err)
 			return console.log(err);
 
@@ -43,6 +45,10 @@ function placeBuyOrders() {
 			return;
 
 		bittrexAPI.getAvgBuyPriceForQuantity("USDT-BTC", tradingConf.USDT_to_GB_batch_size * price_btc_gb, function(err, price_usdt_btc) {
+			console.log("getAvgBuyPriceForQuantity price_usdt_btc " +price_usdt_btc);
+
+			if(err)
+				return console.log(err);
 			let myBuyingPriceInUSDT = price_btc_gb * price_usdt_btc * (1 - tradingConf.USDT_to_GB_margin / 100);
 			console.log("myBuyingPriceInUSDT " + myBuyingPriceInUSDT);
 			if(myBuyingPriceInUSDT > tradingConf.maxGBBuyingPriceInUSDT){
@@ -61,6 +67,7 @@ function placeBuyOrders() {
 function placeSellOrders() {
 
 	bittrexAPI.getAvgSellPriceForQuantity("BTC-GBYTE", tradingConf.BTC_to_GB_batch_size, function(err, price_btc_gb) {
+		console.log("getAvgSellPriceForQuantity " + price_btc_gb);
 		if(err)
 			return console.log(err);
 
@@ -80,8 +87,9 @@ function placeSellOrders() {
 		if (tradingConf.GB_to_USDT_batch_size === 0)
 			return;
 
-		bittrexAPI.getAvgBuyPriceForQuantity("USDT-BTC", tradingConf.GB_to_USDT_batch_size * price_btc_gb, function(err, price_usdt_btc) {
-
+		bittrexAPI.getAvgSellPriceForQuantity("USDT-BTC", tradingConf.GB_to_USDT_batch_size * price_btc_gb, function(err, price_usdt_btc) {
+			if(err)
+				return console.log(err);
 			let mySellingPriceInUSDT = price_btc_gb * price_usdt_btc * (1 + tradingConf.GB_to_USDT_margin / 100);
 			console.log("mySellingPriceInUSDT " + mySellingPriceInUSDT);
 			if(mySellingPriceInUSDT < tradingConf.minGBSellingPriceInUSDT)

@@ -31,9 +31,8 @@ function getAvgBuyPriceForQuantity (pair, qty, handle) {
 		for (let i = 0; i < parsedBody.result.length; i++){
 			qtyLeft -= parsedBody.result[i].Quantity;
 			if (qtyLeft <= 0){
-				totalQtySold += qtyLeft;
-				totalReceived += qtyLeft * parsedBody.result[i].Rate;
-				return handle(null, totalReceived/totalQtySold);
+				totalReceived += (qty - totalQtySold) * parsedBody.result[i].Rate;
+				return handle(null, totalReceived/qty);
 			} else{
 				totalQtySold += parsedBody.result[i].Quantity;
 				totalReceived += parsedBody.result[i].Quantity * parsedBody.result[i].Rate;
@@ -71,9 +70,8 @@ function getAvgSellPriceForQuantity (pair, qty, handle) {
 		for (let i = 0; i < parsedBody.result.length; i++){
 			qtyLeft -= parsedBody.result[i].Quantity;
 			if (qtyLeft <= 0){
-				totalQtyBought += qtyLeft;
-				totalPaid += qtyLeft * parsedBody.result[i].Rate;
-				return handle(null, totalPaid/totalQtyBought);
+				totalPaid += (qty - totalQtyBought) * parsedBody.result[i].Rate;
+				return handle(null, totalPaid/qty);
 			} else{
 				totalQtyBought += parsedBody.result[i].Quantity;
 				totalPaid += parsedBody.result[i].Quantity * parsedBody.result[i].Rate;
