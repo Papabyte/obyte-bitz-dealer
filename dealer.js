@@ -24,7 +24,7 @@ function getLastPricesAndReplaceOrders() {
 
 function placeBuyOrders() {
 
-	bittrexAPI.getAvgBuyPriceForQuantity("BTC-GBYTE", tradingConf.GB_to_BTC_batch_size, function(err, price_btc_gb) {
+	bittrexAPI.getAvgBuyPriceForQuantity("BTC-GBYTE", tradingConf.BTC_to_GB_batch_size, function(err, price_btc_gb) {
 		logger.info("BTC-GBYTE getAvgBuyPriceForQuantity " + price_btc_gb);
 
 		if(err)
@@ -35,10 +35,10 @@ function placeBuyOrders() {
 		if(myBuyingPriceInBTC > tradingConf.maxGBBuyingPriceInBTC) {
 			logger.info(myBuyingPriceInBTC +" BTC max buying price exceeded");
 			console.log("max buying price exceeded");
-		} else if(tradingConf.GB_to_BTC_batch_size > 0) {
-			console.log("will place buy order at " + myBuyingPriceInBTC + " BTC for " + tradingConf.GB_to_BTC_batch_size + "GB");
-			logger.info("will place buy order at " + myBuyingPriceInBTC + " BTC for " + tradingConf.GB_to_BTC_batch_size + "GB");
-			bitzAPI.buyGBWithBTC(tradingConf.GB_to_BTC_batch_size, myBuyingPriceInBTC, function(err) {
+		} else if(tradingConf.BTC_to_GB_batch_size > 0) {
+			console.log("will place buy order at " + myBuyingPriceInBTC + " BTC for " + tradingConf.BTC_to_GB_batch_size + "GB");
+			logger.info("will place buy order at " + myBuyingPriceInBTC + " BTC for " + tradingConf.BTC_to_GB_batch_size + "GB");
+			bitzAPI.buyGBWithBTC(tradingConf.BTC_to_GB_batch_size, myBuyingPriceInBTC, function(err) {
 				if(err)
 					console.log(err)
 			});
@@ -71,7 +71,7 @@ function placeBuyOrders() {
 
 function placeSellOrders() {
 
-	bittrexAPI.getAvgSellPriceForQuantity("BTC-GBYTE", tradingConf.BTC_to_GB_batch_size, function(err, price_btc_gb) {
+	bittrexAPI.getAvgSellPriceForQuantity("BTC-GBYTE", tradingConf.GB_to_BTC_batch_size, function(err, price_btc_gb) {
 		logger.info("BTC-GBYTE getAvgSellPriceForQuantity " + price_btc_gb);
 		if(err)
 			return console.log(err);
@@ -80,11 +80,11 @@ function placeSellOrders() {
 		if(mySellingPriceInBTC < tradingConf.minGBSellingPriceInBTC) {
 			logger.info(mySellingPriceInBTC +" BTC under min selling price");
 			console.log("under minGBSellingPriceInBTC");
-		} else if(tradingConf.BTC_to_GB_batch_size > 0) {
-			console.log("will place sell order at " + mySellingPriceInBTC + " BTC for " + tradingConf.BTC_to_GB_batch_size + "GB");
-			logger.info("will place sell order at " + mySellingPriceInBTC + " BTC for " + tradingConf.BTC_to_GB_batch_size + "GB");
+		} else if(tradingConf.GB_to_BTC_batch_size > 0) {
+			console.log("will place sell order at " + mySellingPriceInBTC + " BTC for " + tradingConf.GB_to_BTC_batch_size + "GB");
+			logger.info("will place sell order at " + mySellingPriceInBTC + " BTC for " + tradingConf.GB_to_BTC_batch_size + "GB");
 
-			bitzAPI.sellGBToBTC(tradingConf.BTC_to_GB_batch_size, mySellingPriceInBTC, function(err) {
+			bitzAPI.sellGBToBTC(tradingConf.GB_to_BTC_batch_size, mySellingPriceInBTC, function(err) {
 				if(err)
 					console.log(err)
 			});
